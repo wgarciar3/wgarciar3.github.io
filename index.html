@@ -1,11 +1,265 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Networks Security GT</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Networks Security GT — Cybersecurity Educational Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e14;
+    --bg-soft:#111722;
+    --card:#141b26;
+    --line:#1f2937;
+    --text:#e6edf3;
+    --muted:#8b99a8;
+    --accent:#3fb950;
+    --accent-dim:#238636;
+    --cyan:#39d0d8;
+    --mono:'JetBrains Mono',monospace;
+    --sans:'Sora',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  /* grid texture background */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(63,185,80,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(63,185,80,.035) 1px,transparent 1px);
+    background-size:42px 42px;
+    z-index:-1;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent);
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+
+  /* HERO */
+  header{
+    padding:90px 0 60px;
+    position:relative;
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:.78rem;
+    color:var(--accent);
+    border:1px solid var(--accent-dim);
+    border-radius:999px;
+    padding:6px 14px;
+    margin-bottom:28px;
+    background:rgba(35,134,54,.08);
+    opacity:0;animation:fade .6s .1s forwards;
+  }
+  .badge .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 8px var(--accent);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  h1{
+    font-size:clamp(2.4rem,6vw,4.2rem);
+    font-weight:800;
+    line-height:1.05;
+    letter-spacing:-.02em;
+    margin-bottom:22px;
+    opacity:0;animation:fade .6s .2s forwards;
+  }
+  h1 .accent{
+    background:linear-gradient(120deg,var(--accent),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .lead{
+    font-size:1.15rem;
+    color:var(--muted);
+    max-width:640px;
+    margin-bottom:34px;
+    opacity:0;animation:fade .6s .3s forwards;
+  }
+  .cmd{
+    font-family:var(--mono);
+    font-size:.92rem;
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 20px;
+    color:var(--cyan);
+    display:inline-block;
+    opacity:0;animation:fade .6s .4s forwards;
+  }
+  .cmd .prompt{color:var(--accent);user-select:none}
+  @keyframes fade{to{opacity:1;transform:none}}
+
+  /* SECTIONS */
+  section{padding:46px 0;border-top:1px solid var(--line)}
+  .sec-label{
+    font-family:var(--mono);
+    font-size:.8rem;
+    color:var(--accent);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  h2{
+    font-size:1.7rem;font-weight:600;
+    letter-spacing:-.01em;margin-bottom:28px;
+  }
+
+  /* CARDS */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:24px;
+    transition:transform .25s ease,border-color .25s ease;
+  }
+  .card:hover{transform:translateY(-4px);border-color:var(--accent-dim)}
+  .card h3{
+    font-size:1.05rem;font-weight:600;margin-bottom:10px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .card h3 .ico{
+    font-family:var(--mono);color:var(--accent);font-size:.95rem;
+  }
+  .card p{color:var(--muted);font-size:.92rem}
+
+  /* tools list */
+  .tools{display:flex;flex-wrap:wrap;gap:10px}
+  .tool{
+    font-family:var(--mono);font-size:.85rem;
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:9px 14px;
+    color:var(--text);
+    transition:border-color .2s,color .2s;
+  }
+  .tool:hover{border-color:var(--cyan);color:var(--cyan)}
+
+  /* about */
+  .about{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:30px;
+    display:flex;flex-wrap:wrap;gap:24px;align-items:center;
+    justify-content:space-between;
+  }
+  .about .info h3{font-size:1.2rem;margin-bottom:4px}
+  .about .info p{color:var(--muted);font-size:.92rem}
+  .btn{
+    font-family:var(--mono);font-size:.88rem;
+    color:var(--bg);background:var(--accent);
+    border-radius:9px;padding:11px 20px;
+    text-decoration:none;font-weight:500;
+    transition:background .2s,transform .2s;
+    white-space:nowrap;
+  }
+  .btn:hover{background:var(--cyan);transform:translateY(-2px)}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:30px 0 50px;
+    text-align:center;
+    color:var(--muted);
+    font-family:var(--mono);
+    font-size:.82rem;
+  }
+  footer a{color:var(--accent);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+</style>
 </head>
 <body>
-  <h1>Networks Security GT</h1>
-  <p>Proyecto educativo de ciberseguridad Mariano Galvez de Guatemala</p>
+<div class="wrap">
+
+  <header>
+    <span class="badge"><span class="dot"></span>networkssecuritygt.is-a.dev</span>
+    <h1>Networks <span class="accent">Security</span> GT</h1>
+    <p class="lead">A cybersecurity educational project documenting research, labs and tooling from a Master's degree in Information Security at Universidad Mariano Gálvez de Guatemala.</p>
+    <div class="cmd"><span class="prompt">$</span> whoami → security researcher · network engineer · GT</div>
+  </header>
+
+  <section id="topics">
+    <p class="sec-label">// areas of study</p>
+    <h2>What this project covers</h2>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="ico">[01]</span> Network Security</h3>
+        <p>Designing and hardening segmented networks, firewall policy, VLAN isolation and traffic inspection across multi-site infrastructure.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">[02]</span> Penetration Testing</h3>
+        <p>Controlled exploitation labs against vulnerable targets, service enumeration, and post-exploitation in isolated GNS3 environments.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">[03]</span> Traffic Analysis</h3>
+        <p>Packet capture, protocol dissection and detection of anomalous behavior using Wireshark and command-line capture tools.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">[04]</span> Risk Management</h3>
+        <p>Threat modeling and risk matrices following the ISO/IEC 27005 methodology for structured information-security assessment.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">[05]</span> Vulnerability Scanning</h3>
+        <p>Authenticated and unauthenticated scans, CVE triage and remediation prioritization across test systems.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">[06]</span> Credential Security</h3>
+        <p>Password strength evaluation, hashing schemes and offline cracking exercises to understand real-world attack feasibility.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <p class="sec-label">// toolbox</p>
+    <h2>Tools &amp; technologies</h2>
+    <div class="tools">
+      <span class="tool">Nmap</span>
+      <span class="tool">Nessus</span>
+      <span class="tool">OpenVAS</span>
+      <span class="tool">Metasploit</span>
+      <span class="tool">Wireshark</span>
+      <span class="tool">tcpdump</span>
+      <span class="tool">hashcat</span>
+      <span class="tool">John the Ripper</span>
+      <span class="tool">Kali Linux</span>
+      <span class="tool">GNS3</span>
+      <span class="tool">pfSense</span>
+      <span class="tool">Yersinia</span>
+      <span class="tool">Cisco IOS</span>
+      <span class="tool">Linux</span>
+    </div>
+  </section>
+
+  <section id="about">
+    <p class="sec-label">William Alejandro Garcia Rivera</p>
+    <h2>Behind the project</h2>
+    <div class="about">
+      <div class="info">
+        <h3>William Alejandro García Rivera</h3>
+        <p>Systems Engineer · MSc in Information Security candidate (UMG) · Guatemala</p>
+      </div>
+      <a class="btn" href="https://github.com/wgarciar3" target="_blank" rel="noopener">View GitHub →</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>Built &amp; hosted on GitHub Pages · <a href="https://github.com/wgarciar3" target="_blank" rel="noopener">github.com/wgarciar3</a></p>
+    <p style="margin-top:8px;opacity:.6">© 2026 Networks Security GT — educational, non-commercial</p>
+  </footer>
+
+</div>
 </body>
 </html>
